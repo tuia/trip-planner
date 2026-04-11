@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "atlassian": {
+      "type": "sse",
+      "url": "https://mcp.atlassian.com/v1/sse"
+    },
+		"figma": {
+			"url": "http://127.0.0.1:3845/mcp",
+			"type": "http"
+		},
+		"supabase": {
+			"url": "https://mcp.supabase.com/mcp",
+			"type": "http"
+		}
+  }
+}
