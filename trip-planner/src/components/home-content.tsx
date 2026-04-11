@@ -53,9 +53,9 @@ export function HomeContent() {
       .select("id, name, location, rating, image_url, description, traveler_count, traveler_avatars, latitude, longitude")
       .order("is_featured", { ascending: false })
       .order("rating", { ascending: false })
-      .then(({ data, error }) => {
+      .then(({ data, error }: { data: MavenDestinationRow[] | null; error: any }) => {
         if (!error && data) {
-          setDestinations((data as MavenDestinationRow[]).map(mapRow));
+          setDestinations(data.map(mapRow));
         }
         setLoading(false);
       });
