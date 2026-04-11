@@ -5,7 +5,7 @@ import { Bell } from "lucide-react";
 import { DestinationCard } from "@/components/destination-card";
 import { DestinationDrawer } from "@/components/destination-drawer";
 import { BottomNav } from "@/components/bottom-nav";
-import { supabaseBrowserClient } from "@/lib/supabase/client";
+import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { Destination } from "@/types/destination";
 
 type MavenDestinationRow = {
@@ -48,7 +48,7 @@ export function HomeContent() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    supabaseBrowserClient
+    getSupabaseBrowserClient()
       .from("maven_destinations")
       .select("id, name, location, rating, image_url, description, traveler_count, traveler_avatars, latitude, longitude")
       .order("is_featured", { ascending: false })
