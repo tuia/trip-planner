@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Bell, CalendarDays, MapPin } from "lucide-react";
 import { BottomNav } from "@/components/bottom-nav";
@@ -59,31 +59,50 @@ const WEEK_DAYS = [
 export function ScheduleContent() {
   const router = useRouter();
   const [selectedDay, setSelectedDay] = useState(22);
+  const [animateIn, setAnimateIn] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation on mount
+    setAnimateIn(true);
+  }, []);
 
   return (
     <div className="flex min-h-dvh flex-col bg-background">
       <main className="flex flex-1 flex-col">
         <div className="flex flex-1 flex-col overflow-y-auto pb-24">
           {/* Header */}
-          <header className="flex items-center justify-between px-5 pt-14 pb-2">
+          <header
+            className="flex items-center justify-between px-5 pt-14 pb-2 animate-schedule-header"
+            style={{
+              opacity: animateIn ? 1 : 0,
+              animation: animateIn ? 'scheduleHeaderEnter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards' : 'none',
+            }}
+          >
             <button
               aria-label="Go back"
               onClick={() => router.back()}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-travel-surface"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-travel-surface transition-transform hover:scale-110 active:scale-95 duration-200"
             >
               <ChevronLeft className="h-5 w-5 text-travel-text" />
             </button>
             <h1 className="text-travel-text text-lg font-semibold">Schedule</h1>
             <button
               aria-label="Notifications"
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-travel-surface"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-travel-surface transition-transform hover:scale-110 active:scale-95 duration-200"
             >
               <Bell className="h-5 w-5 text-travel-text" />
             </button>
           </header>
 
           {/* Week calendar card */}
-          <section className="mx-5 mt-4 mb-5 rounded-3xl bg-card p-4 shadow-[var(--shadow-calendar-widget)]">
+          <section
+            className="mx-5 mt-4 mb-5 rounded-3xl bg-card p-4 shadow-[var(--shadow-calendar-widget)]"
+            style={{
+              opacity: animateIn ? 1 : 0,
+              transform: animateIn ? 'translateY(0)' : 'translateY(16px)',
+              animation: animateIn ? 'scheduleItemEnter 0.5s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both' : 'none',
+            }}
+          >
             {/* Month row */}
             <div className="mb-4 flex items-center justify-between">
               <p className="text-travel-text text-xl font-semibold">
@@ -114,7 +133,7 @@ export function ScheduleContent() {
                     key={date}
                     onClick={() => setSelectedDay(date)}
                     className={cn(
-                      "flex w-11 flex-col items-center gap-2 rounded-xl py-2 transition-colors",
+                      "flex w-11 flex-col items-center gap-2 rounded-xl py-2 transition-all duration-300",
                       isActive ? "bg-travel-action" : ""
                     )}
                   >
@@ -141,21 +160,31 @@ export function ScheduleContent() {
           </section>
 
           {/* My Schedule section */}
-          <section>
+          <section
+            style={{
+              opacity: animateIn ? 1 : 0,
+              animation: animateIn ? 'scheduleItemEnter 0.5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both' : 'none',
+            }}
+          >
             {/* Section header */}
             <div className="flex items-center justify-between px-5 pb-3">
               <h2 className="text-travel-text text-xl font-semibold leading-7">
                 My Schedule
               </h2>
-              <button className="text-travel-primary text-sm">View all</button>
+              <button className="text-travel-primary text-sm transition-opacity hover:opacity-70 active:opacity-60">View all</button>
             </div>
 
             {/* Schedule item cards */}
             <div className="flex flex-col gap-3 px-5">
-              {SCHEDULE_ITEMS.map((item) => (
+              {SCHEDULE_ITEMS.map((item, index) => (
                 <button
                   key={item.id}
-                  className="flex w-full items-center gap-3 rounded-2xl bg-card p-3 shadow-card text-left"
+                  className="flex w-full items-center gap-3 rounded-2xl bg-card p-3 shadow-card text-left transition-all hover:shadow-[0px_8px_20px_rgba(189,198,211,0.16)] active:scale-95 duration-200"
+                  style={{
+                    opacity: animateIn ? 1 : 0,
+                    transform: animateIn ? 'translateY(0)' : 'translateY(16px)',
+                    animation: animateIn ? `scheduleItemEnter 0.5s ${0.3 + index * 0.1}s cubic-bezier(0.22, 1, 0.36, 1) both` : 'none',
+                  }}
                 >
                   {/* Thumbnail */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
